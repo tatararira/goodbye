@@ -683,9 +683,9 @@ function createPopup(title, content, options = {}) {
         console.log("dmd?"+String(player.where))
         const currentScene = scenes[player.where];
         const sceneTitle = currentScene ? (currentScene.title || "알 수 없는 장소") : "장소 불명";
-        
+        console.log(player.where+"dtkdggg");
         const gameData = {
-            player: player,
+            player: JSON.parse(JSON.stringify(player)),
             worldState: worldState,
             npcs: npcs,
             plus_1: plus_,
@@ -712,22 +712,31 @@ function createPopup(title, content, options = {}) {
 
         const data = JSON.parse(rawData);
         
-        // 데이터 복구
         player = data.player;
         worldState = data.worldState;
         npcs = data.npcs;
+        
+        // 저장된 시점의 plus 데이터를 직접 복구
         plus = data.plus_1 || "";
         plus1 = data.plus1_1 || "";
 
         refreshStatus();
-        updateScene(player.where); // 저장된 위치로 이동
         
-        // 모든 팝업 닫기
+        // player.where가 정확한 scenes의 키인지 콘솔로 확인
+        console.log("로딩 시도 장소:", player.where);
+        updateScene(player.where); 
+        
         document.querySelectorAll('.popup-container').forEach(p => p.remove());
-        console.log(`${slotIndex}번 슬롯 로드 완료`);
     }
 
     function updateScene(sceneKey) {
+        if (!sceneKey || !scenes[sceneKey]) {
+            console.error("존재하지 않는 장면입니다:", sceneKey);
+            // 기본 장면으로 보내거나 에러 메시지 출력
+            player.where = 'schoolroom'; // 혹은 초기 장면 키
+            return; 
+        }
+
         const scene = scenes[sceneKey];
         if (scene.onEnter) scene.onEnter();
 
