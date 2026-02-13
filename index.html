@@ -39,16 +39,16 @@
         /* 사이드바 스타일 */
         .sidebar {
             height: 100%;
-            width: 0; /* 처음엔 닫혀있음 */
+            width: 0; 
             position: fixed;
-            z-index: 1;
+            z-index: 2000; /* 팝업보다 더 위에 오도록 높게 설정 */
             top: 0;
             right: 0;
-            background-color: #111;
+            background-color: rgba(17, 17, 17, 0.95); /* 살짝 투명하게 해서 뒤가 보이게 */
             overflow-x: hidden;
             transition: 0.5s;
-            padding-top: 60px;
             border-left: 1px solid #ff4757;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
         }
 
         .sidebar-content {
@@ -118,6 +118,10 @@
                 width: 100% !important; /* 모바일은 사이드바가 전체를 덮게 */
                 right: -100%;
                 transition: 0.3s;
+            }
+            .sidebar-content {
+                min-width: 80vw; /* 모바일에서는 화면 너비의 80% 차지 */
+                padding: 60px 20px 20px 20px; /* 닫기 버튼 자리를 위해 패딩 추가 */
             }
             .sidebar.open {
                 right: 0;
